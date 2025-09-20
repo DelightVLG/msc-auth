@@ -1,0 +1,10 @@
+version: v1
+name: github.com/delight-vlg/msc-auth-api
+deps:
+  - buf.build/googleapis/googleapis
+lint:
+  use:
+    - STANDARD
+breaking:
+  use:
+    - FILE
