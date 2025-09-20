@@ -9,7 +9,6 @@ package userv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 	reflect "reflect"
@@ -27,19 +26,22 @@ const (
 type Role int32
 
 const (
-	Role_USER  Role = 0
-	Role_ADMIN Role = 1
+	Role_ROLE_UNSPECIFIED Role = 0
+	Role_ROLE_USER        Role = 1
+	Role_ROLE_ADMIN       Role = 2
 )
 
 // Enum value maps for Role.
 var (
 	Role_name = map[int32]string{
-		0: "USER",
-		1: "ADMIN",
+		0: "ROLE_UNSPECIFIED",
+		1: "ROLE_USER",
+		2: "ROLE_ADMIN",
 	}
 	Role_value = map[string]int32{
-		"USER":  0,
-		"ADMIN": 1,
+		"ROLE_UNSPECIFIED": 0,
+		"ROLE_USER":        1,
+		"ROLE_ADMIN":       2,
 	}
 )
 
@@ -76,7 +78,7 @@ type CreateRequest struct {
 	Email           *string                `protobuf:"bytes,2,opt,name=email" json:"email,omitempty"`
 	Password        *string                `protobuf:"bytes,3,opt,name=password" json:"password,omitempty"`
 	PasswordConfirm *string                `protobuf:"bytes,4,opt,name=password_confirm,json=passwordConfirm" json:"password_confirm,omitempty"`
-	Role            *Role                  `protobuf:"varint,5,opt,name=role,enum=user.v1.Role" json:"role,omitempty"`
+	Role            *Role                  `protobuf:"varint,5,opt,name=role,enum=api.user.v1.Role" json:"role,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -143,7 +145,7 @@ func (x *CreateRequest) GetRole() Role {
 	if x != nil && x.Role != nil {
 		return *x.Role
 	}
-	return Role_USER
+	return Role_ROLE_UNSPECIFIED
 }
 
 type CreateResponse struct {
@@ -239,7 +241,7 @@ type GetResponse struct {
 	Id            *int64                 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
 	Name          *string                `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
 	Email         *string                `protobuf:"bytes,3,opt,name=email" json:"email,omitempty"`
-	Role          *Role                  `protobuf:"varint,4,opt,name=role,enum=user.v1.Role" json:"role,omitempty"`
+	Role          *Role                  `protobuf:"varint,4,opt,name=role,enum=api.user.v1.Role" json:"role,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -301,7 +303,7 @@ func (x *GetResponse) GetRole() Role {
 	if x != nil && x.Role != nil {
 		return *x.Role
 	}
-	return Role_USER
+	return Role_ROLE_UNSPECIFIED
 }
 
 func (x *GetResponse) GetCreatedAt() *timestamppb.Timestamp {
@@ -386,6 +388,42 @@ func (x *UpdateRequest) GetRole() *wrapperspb.Int32Value {
 	return nil
 }
 
+type UpdateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateResponse) Reset() {
+	*x = UpdateResponse{}
+	mi := &file_api_user_v1_user_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateResponse) ProtoMessage() {}
+
+func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_user_v1_user_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
+func (*UpdateResponse) Descriptor() ([]byte, []int) {
+	return file_api_user_v1_user_proto_rawDescGZIP(), []int{5}
+}
+
 type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            *int64                 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
@@ -395,7 +433,7 @@ type DeleteRequest struct {
 
 func (x *DeleteRequest) Reset() {
 	*x = DeleteRequest{}
-	mi := &file_api_user_v1_user_proto_msgTypes[5]
+	mi := &file_api_user_v1_user_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -407,7 +445,7 @@ func (x *DeleteRequest) String() string {
 func (*DeleteRequest) ProtoMessage() {}
 
 func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_user_v1_user_proto_msgTypes[5]
+	mi := &file_api_user_v1_user_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -420,7 +458,7 @@ func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRequest) Descriptor() ([]byte, []int) {
-	return file_api_user_v1_user_proto_rawDescGZIP(), []int{5}
+	return file_api_user_v1_user_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DeleteRequest) GetId() int64 {
@@ -430,27 +468,63 @@ func (x *DeleteRequest) GetId() int64 {
 	return 0
 }
 
+type DeleteResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteResponse) Reset() {
+	*x = DeleteResponse{}
+	mi := &file_api_user_v1_user_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteResponse) ProtoMessage() {}
+
+func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_user_v1_user_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
+func (*DeleteResponse) Descriptor() ([]byte, []int) {
+	return file_api_user_v1_user_proto_rawDescGZIP(), []int{7}
+}
+
 var File_api_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_api_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x16api/user/v1/user.proto\x12\auser.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xa3\x01\n" +
+	"\x16api/user/v1/user.proto\x12\vapi.user.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xa7\x01\n" +
 	"\rCreateRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x03 \x01(\tR\bpassword\x12)\n" +
-	"\x10password_confirm\x18\x04 \x01(\tR\x0fpasswordConfirm\x12!\n" +
-	"\x04role\x18\x05 \x01(\x0e2\r.user.v1.RoleR\x04role\" \n" +
+	"\x10password_confirm\x18\x04 \x01(\tR\x0fpasswordConfirm\x12%\n" +
+	"\x04role\x18\x05 \x01(\x0e2\x11.api.user.v1.RoleR\x04role\" \n" +
 	"\x0eCreateResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\x1c\n" +
 	"\n" +
 	"GetRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\xe0\x01\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\xe4\x01\n" +
 	"\vGetResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
-	"\x05email\x18\x03 \x01(\tR\x05email\x12!\n" +
-	"\x04role\x18\x04 \x01(\x0e2\r.user.v1.RoleR\x04role\x129\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12%\n" +
+	"\x04role\x18\x04 \x01(\x0e2\x11.api.user.v1.RoleR\x04role\x129\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
@@ -459,17 +533,21 @@ const file_api_user_v1_user_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x120\n" +
 	"\x04name\x18\x02 \x01(\v2\x1c.google.protobuf.StringValueR\x04name\x122\n" +
 	"\x05email\x18\x03 \x01(\v2\x1c.google.protobuf.StringValueR\x05email\x12/\n" +
-	"\x04role\x18\x04 \x01(\v2\x1b.google.protobuf.Int32ValueR\x04role\"\x1f\n" +
+	"\x04role\x18\x04 \x01(\v2\x1b.google.protobuf.Int32ValueR\x04role\"\x10\n" +
+	"\x0eUpdateResponse\"\x1f\n" +
 	"\rDeleteRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id*\x1b\n" +
-	"\x04Role\x12\b\n" +
-	"\x04USER\x10\x00\x12\t\n" +
-	"\x05ADMIN\x10\x012\xee\x01\n" +
-	"\vUserService\x129\n" +
-	"\x06Create\x12\x16.user.v1.CreateRequest\x1a\x17.user.v1.CreateResponse\x120\n" +
-	"\x03Get\x12\x13.user.v1.GetRequest\x1a\x14.user.v1.GetResponse\x128\n" +
-	"\x06Update\x12\x16.user.v1.UpdateRequest\x1a\x16.google.protobuf.Empty\x128\n" +
-	"\x06Delete\x12\x16.user.v1.DeleteRequest\x1a\x16.google.protobuf.EmptyB3Z1github.com/DelightVLG/msc-auth/pkg/user/v1;userv1b\beditionsp\xe8\a"
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x10\n" +
+	"\x0eDeleteResponse*;\n" +
+	"\x04Role\x12\x14\n" +
+	"\x10ROLE_UNSPECIFIED\x10\x00\x12\r\n" +
+	"\tROLE_USER\x10\x01\x12\x0e\n" +
+	"\n" +
+	"ROLE_ADMIN\x10\x022\x90\x02\n" +
+	"\vUserService\x12A\n" +
+	"\x06Create\x12\x1a.api.user.v1.CreateRequest\x1a\x1b.api.user.v1.CreateResponse\x128\n" +
+	"\x03Get\x12\x17.api.user.v1.GetRequest\x1a\x18.api.user.v1.GetResponse\x12A\n" +
+	"\x06Update\x12\x1a.api.user.v1.UpdateRequest\x1a\x1b.api.user.v1.UpdateResponse\x12A\n" +
+	"\x06Delete\x12\x1a.api.user.v1.DeleteRequest\x1a\x1b.api.user.v1.DeleteResponseB7Z5github.com/DelightVLG/msc-auth/pkg/api/user/v1;userv1b\beditionsp\xe8\a"
 
 var (
 	file_api_user_v1_user_proto_rawDescOnce sync.Once
@@ -484,36 +562,37 @@ func file_api_user_v1_user_proto_rawDescGZIP() []byte {
 }
 
 var file_api_user_v1_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_api_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_api_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_api_user_v1_user_proto_goTypes = []any{
-	(Role)(0),                      // 0: user.v1.Role
-	(*CreateRequest)(nil),          // 1: user.v1.CreateRequest
-	(*CreateResponse)(nil),         // 2: user.v1.CreateResponse
-	(*GetRequest)(nil),             // 3: user.v1.GetRequest
-	(*GetResponse)(nil),            // 4: user.v1.GetResponse
-	(*UpdateRequest)(nil),          // 5: user.v1.UpdateRequest
-	(*DeleteRequest)(nil),          // 6: user.v1.DeleteRequest
-	(*timestamppb.Timestamp)(nil),  // 7: google.protobuf.Timestamp
-	(*wrapperspb.StringValue)(nil), // 8: google.protobuf.StringValue
-	(*wrapperspb.Int32Value)(nil),  // 9: google.protobuf.Int32Value
-	(*emptypb.Empty)(nil),          // 10: google.protobuf.Empty
+	(Role)(0),                      // 0: api.user.v1.Role
+	(*CreateRequest)(nil),          // 1: api.user.v1.CreateRequest
+	(*CreateResponse)(nil),         // 2: api.user.v1.CreateResponse
+	(*GetRequest)(nil),             // 3: api.user.v1.GetRequest
+	(*GetResponse)(nil),            // 4: api.user.v1.GetResponse
+	(*UpdateRequest)(nil),          // 5: api.user.v1.UpdateRequest
+	(*UpdateResponse)(nil),         // 6: api.user.v1.UpdateResponse
+	(*DeleteRequest)(nil),          // 7: api.user.v1.DeleteRequest
+	(*DeleteResponse)(nil),         // 8: api.user.v1.DeleteResponse
+	(*timestamppb.Timestamp)(nil),  // 9: google.protobuf.Timestamp
+	(*wrapperspb.StringValue)(nil), // 10: google.protobuf.StringValue
+	(*wrapperspb.Int32Value)(nil),  // 11: google.protobuf.Int32Value
 }
 var file_api_user_v1_user_proto_depIdxs = []int32{
-	0,  // 0: user.v1.CreateRequest.role:type_name -> user.v1.Role
-	0,  // 1: user.v1.GetResponse.role:type_name -> user.v1.Role
-	7,  // 2: user.v1.GetResponse.created_at:type_name -> google.protobuf.Timestamp
-	7,  // 3: user.v1.GetResponse.updated_at:type_name -> google.protobuf.Timestamp
-	8,  // 4: user.v1.UpdateRequest.name:type_name -> google.protobuf.StringValue
-	8,  // 5: user.v1.UpdateRequest.email:type_name -> google.protobuf.StringValue
-	9,  // 6: user.v1.UpdateRequest.role:type_name -> google.protobuf.Int32Value
-	1,  // 7: user.v1.UserService.Create:input_type -> user.v1.CreateRequest
-	3,  // 8: user.v1.UserService.Get:input_type -> user.v1.GetRequest
-	5,  // 9: user.v1.UserService.Update:input_type -> user.v1.UpdateRequest
-	6,  // 10: user.v1.UserService.Delete:input_type -> user.v1.DeleteRequest
-	2,  // 11: user.v1.UserService.Create:output_type -> user.v1.CreateResponse
-	4,  // 12: user.v1.UserService.Get:output_type -> user.v1.GetResponse
-	10, // 13: user.v1.UserService.Update:output_type -> google.protobuf.Empty
-	10, // 14: user.v1.UserService.Delete:output_type -> google.protobuf.Empty
+	0,  // 0: api.user.v1.CreateRequest.role:type_name -> api.user.v1.Role
+	0,  // 1: api.user.v1.GetResponse.role:type_name -> api.user.v1.Role
+	9,  // 2: api.user.v1.GetResponse.created_at:type_name -> google.protobuf.Timestamp
+	9,  // 3: api.user.v1.GetResponse.updated_at:type_name -> google.protobuf.Timestamp
+	10, // 4: api.user.v1.UpdateRequest.name:type_name -> google.protobuf.StringValue
+	10, // 5: api.user.v1.UpdateRequest.email:type_name -> google.protobuf.StringValue
+	11, // 6: api.user.v1.UpdateRequest.role:type_name -> google.protobuf.Int32Value
+	1,  // 7: api.user.v1.UserService.Create:input_type -> api.user.v1.CreateRequest
+	3,  // 8: api.user.v1.UserService.Get:input_type -> api.user.v1.GetRequest
+	5,  // 9: api.user.v1.UserService.Update:input_type -> api.user.v1.UpdateRequest
+	7,  // 10: api.user.v1.UserService.Delete:input_type -> api.user.v1.DeleteRequest
+	2,  // 11: api.user.v1.UserService.Create:output_type -> api.user.v1.CreateResponse
+	4,  // 12: api.user.v1.UserService.Get:output_type -> api.user.v1.GetResponse
+	6,  // 13: api.user.v1.UserService.Update:output_type -> api.user.v1.UpdateResponse
+	8,  // 14: api.user.v1.UserService.Delete:output_type -> api.user.v1.DeleteResponse
 	11, // [11:15] is the sub-list for method output_type
 	7,  // [7:11] is the sub-list for method input_type
 	7,  // [7:7] is the sub-list for extension type_name
@@ -532,7 +611,7 @@ func file_api_user_v1_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_user_v1_user_proto_rawDesc), len(file_api_user_v1_user_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   6,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
